@@ -16,13 +16,6 @@ const Wrapper = styled.div`
 const Admin = () => {
   const [active, setActive] = useState(false);
 
-  const handleLogin = async () => {
-
-    await dispatch(setUser({
-      username: "test username",
-      token: "test token"
-    }))
-  };
 
 
 
@@ -37,7 +30,6 @@ const Admin = () => {
       >
         <TopBar pageTitle="Admin Panel" active={active} setActive={setActive} />
         <h1>Welcome to Admin Panel</h1>
-        <button onClick={() => handleLogin()}>Login</button>
       </Wrapper>
       <SideNav active={active} setActive={setActive} />
     </OuterWrapper>

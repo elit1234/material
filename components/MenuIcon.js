@@ -1,22 +1,24 @@
 import { useRef, useEffect } from "react";
+import {getDark
+} from "./userFuncs"
 import gsap, { Power2 } from "gsap";
 import styled from "styled-components";
 
 const Upper = styled.path`
   fill: none;
-  stroke: #000;
+  stroke: ${props => props.dark ? `#fff` : `#000`};
   stroke-linecap: round;
 `;
 
 const Middle = styled.path`
   fill: none;
-  stroke: #000;
+  stroke: ${props => props.dark ? `#fff` : `#000`};
   stroke-linecap: round;
 `;
 
 const Lower = styled.path`
   fill: none;
-  stroke: #000;
+  stroke: ${props => props.dark ? `#fff` : `#000`};
   stroke-linecap: round;
 `;
 
@@ -32,6 +34,8 @@ const MenuIcon = ({ active, setActive }) => {
   const upperRef = useRef(null);
   const middleRef = useRef(null);
   const lowerRef = useRef(null);
+  
+  const dark = getDark();
 
   useEffect(() => {
     animRef.current = tl
@@ -78,9 +82,9 @@ const MenuIcon = ({ active, setActive }) => {
 
   return (
     <Svg viewBox="0 0 12 10" onClick={() => toggleMenu()}>
-      <Upper d="M10,2 L2,2" ref={upperRef} />
-      <Middle d="M2,5 L10,5" ref={middleRef} />
-      <Lower d="M10,8 L2,8" ref={lowerRef} />
+      <Upper dark={dark ? 1 : 0} d="M10,2 L2,2" ref={upperRef} />
+      <Middle dark={dark ? 1 : 0} d="M2,5 L10,5" ref={middleRef} />
+      <Lower dark={dark ? 1 : 0} d="M10,8 L2,8" ref={lowerRef} />
     </Svg>
   );
 };

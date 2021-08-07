@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { gsap } from "gsap";
 import styled from "styled-components";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,43 +42,42 @@ const Button = styled.button`
   }
 `;
 
-const Home = () => {
+const Home = (props) => {
   const adminButton = useRef(null);
   const userButton = useRef(null);
   const animRef = useRef(null);
-  const tl = gsap.timeline({ paused: true });
+  const tl = gsap.timeline({ paused: true, rotation: 0.01 });
   const router = useRouter();
 
   const user = useSelector((state) => state.user);
-
-  
 
   useEffect(() => {
     animRef.current = tl
       .fromTo(
         adminButton.current,
         {
-          x: "-100vw"
+          x: "-100vw",
         },
         {
           x: 0,
           duration: 1.2,
-          autoAlpha: 1
+          autoAlpha: 1,
         },
         0
       )
       .fromTo(
         userButton.current,
         {
-          x: "100vw"
+          x: "100vw",
         },
         {
           x: 0,
           duration: 1.2,
-          autoAlpha: 1
+          autoAlpha: 1,
         },
         1
       )
+
       .play();
   }, []);
 
@@ -88,22 +87,23 @@ const Home = () => {
         .fromTo(
           userButton.current,
           {
-            scale: 1
+            scale: 1,
           },
           {
             scale: 0,
             autoAlpha: 0,
-            duration: 0.5
+            duration: 0.5,
           }
         )
         .fromTo(
           adminButton.current,
           {
-            rotate: 0
+            rotate: 0,
           },
           {
             rotate: 360,
-            duration: 1.2
+            width: "90vw",
+            duration: 0.8,
           }
         );
     else
@@ -111,33 +111,31 @@ const Home = () => {
         .fromTo(
           adminButton.current,
           {
-            scale: 1
+            scale: 1,
           },
           {
             scale: 0,
             autoAlpha: 0,
-            duration: 0.5
+            duration: 0.5,
           }
         )
         .fromTo(
           userButton.current,
           {
-            rotate: 0
+            rotate: 0,
           },
           {
             rotate: 360,
-            duration: 1.2
+            duration: 1.2,
           }
         );
 
     animRef.current.play().then(() => {
       if (opt === 1) {
-        if(user && user.username && user.token) {
+        if (user && user.username && user.token) {
           router.push("/admin");
-        }
-        else router.push("/login")
-      }
-      else router.push("/user");
+        } else router.push("/login");
+      } else router.push("/user");
     });
   };
 

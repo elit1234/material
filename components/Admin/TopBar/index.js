@@ -3,15 +3,16 @@ import { gsap } from "gsap";
 import styled from "styled-components";
 import Head from 'next/head'
 import { useRouter } from "next/router"
-import { useSelector } from "react-redux";
 
 
 import MenuIcon from "../../MenuIcon";
+import {checkAdminToken, getUser} from "../adminFunc";
+import { getDark } from "../../userFuncs";
 
 const Container = styled.div`
   height: 15vh;
   width: 100%;
-  background: #2196f3;
+  background: ${props => !props.dark ? `#2196f3` : `#181818`};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,10 +36,19 @@ const TopBar = ({ pageTitle, active, setActive }) => {
   const wrapperRef = useRef(null);
   const tl = gsap.timeline({});
   const router = useRouter();
-  const user = useSelector((state) => state.user)
+  const isAdmin = checkAdminToken();
+  const user = getUser();
+  const dark = getDark();
+ 
+
 
   useEffect(() => {
-    if(user && user.username && user.token) {
+    if(!isAdmin) {
+       router.push("/");
+    }
+  }, [isAdmin])
+
+  useEffect(() => {
       animRef.current = tl.fromTo(
         wrapperRef.current,
         {
@@ -50,10 +60,7 @@ const TopBar = ({ pageTitle, active, setActive }) => {
           autoAlpha: 1
         }
       );
-    }
-    else {
-      // router.push("/login")
-    }
+    
   }, [])
 
   return (
@@ -62,6 +69,7 @@ const TopBar = ({ pageTitle, active, setActive }) => {
       onClick={() => {
         if (active) setActive(!active);
       }}
+      dark={dark ? 1 : 0}
     >
       <Head>
         <title>{pageTitle ? `${user && user.username && user.username} - ${pageTitle}` : "Admin Panel"}</title>
